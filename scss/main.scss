@@ -1,0 +1,116 @@
+//IMPORTS
+@import "lib/var";
+
+//VAR
+.div {
+    background: $color-brand;
+}
+
+//MIXIN => BLOQUE DE CODIGO COMO FUNCION
+@mixin header {
+    background-color: $color-white;
+    width: 100%;
+    height: 150px;
+}
+
+@mixin main-container($max-width: 800px) {
+    max-width: $max-width;
+    background-color: $color-brand;
+}
+
+header {
+    @include header;
+}
+
+.main {
+    @include main-container(500px);
+}
+
+//CONTENT
+@mixin media-query($min-width) {
+    @media only screen and (min-width: $min-width) {
+        @content;
+    }
+}
+
+section {
+    background-color: blue;
+    @include media-query(800px) {
+        background-color: red;
+    }
+}
+
+//EXTEND
+
+//CUANDO USAMOS EL SIMBOLO: % NO GENERA NADA DE CODIGO CSS HASTA QUE 
+//EXTENDAMOS ESE CODIGO
+//SE LLAMA PLACEHOLDER
+//GENERA UN SELECTOR MULTIPLE CON TODOS LOS QUE EXTIENDEN DE EL
+%max-width {
+    max-width: 100px;
+    background-color: red;
+}
+
+.section {
+    @extend %max-width;
+}
+
+.container {
+    @extend %max-width;
+}
+
+//FUNCTIONS
+@function sum($val1, $val2) {
+    @return $val1 + $val2;
+}
+
+.div {
+    padding: sum(10px, 5px);
+}
+
+//ARRAYS - MAPA
+$fs: (
+    big: 24px,
+    normal: 16px,
+    small: 14px,
+    x-small: 12px
+);
+
+p {
+    font-size: map-get($fs, normal);
+}
+
+small {
+    font-size: map-get($fs, small);
+}
+
+//LIST, EACH
+$font-weights: normal bold italic;
+
+@each $font in ($font-weights) {
+    .#{$font} {
+        font-weight: $font;
+    };
+}
+
+//FOR
+@for $i from 1 to 5 {
+    .class-#{$i} {
+        &:before {
+            content: "#{$i}";
+        }
+    }
+}
+
+//CONDICIONALES: IF
+p {
+    color: black;
+}
+
+$background-color: black;
+
+@if $background-color == black {
+    p {
+        color: white;
+    }
+}
